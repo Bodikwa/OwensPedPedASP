@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BackEndServices.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OwensPedPed.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +11,24 @@ namespace OwensPedPedWebApplication.Controllers
 {
     public class EmployeeController : Controller
     {
-        // GET: EmployeeController
-        public ActionResult Index()
+
+       
+        private readonly IEmployeeRepository _employeeRepository;
+
+        public EmployeeController(IEmployeeRepository employeeRepository)
         {
-            return View();
+            _employeeRepository = employeeRepository;
+        }
+            // GET: EmployeeController
+            public ActionResult Index()
+        {
+            return View(_employeeRepository.GetAllEmployees());
         }
 
         // GET: EmployeeController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(_employeeRepository.GetEmployeeById(id));
         }
 
         // GET: EmployeeController/Create
@@ -30,10 +40,13 @@ namespace OwensPedPedWebApplication.Controllers
         // POST: EmployeeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create([FromForm] Employee employee)
         {
             try
             {
+                _employeeRepository.InsertEmployee(employee);
+                _employeeRepository.SaveEmployee();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -45,16 +58,19 @@ namespace OwensPedPedWebApplication.Controllers
         // GET: EmployeeController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(_employeeRepository.GetEmployeeById(id));
         }
 
         // POST: EmployeeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit([FromForm] Employee employee)
         {
             try
             {
+                _employeeRepository.UpdateEmployee(employee);
+                _employeeRepository.SaveEmployee();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -66,16 +82,19 @@ namespace OwensPedPedWebApplication.Controllers
         // GET: EmployeeController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(_employeeRepository.GetEmployeeById(id));
         }
 
         // POST: EmployeeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete([FromForm] Employee employee)
         {
             try
             {
+                _employeeRepository.DeleteEmployee(employee.EmployeeId);
+                _employeeRepository.SaveEmployee();
+
                 return RedirectToAction(nameof(Index));
             }
             catch

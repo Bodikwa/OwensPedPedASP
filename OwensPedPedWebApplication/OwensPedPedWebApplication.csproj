@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Country\" />
-    <Folder Include="Views\Employee\" />
   </ItemGroup>
 
 </Project>

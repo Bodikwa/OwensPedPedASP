@@ -1,0 +1,72 @@
+﻿@model OwensPedPed.DAL.Models.Employee
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmployeeName" class="control-label">Employee Name</label>
+                <input asp-for="EmployeeName" class="form-control" />
+                <span asp-validation-for="EmployeeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeSurname" class="control-label">Employee Surname</label>
+                <input asp-for="EmployeeSurname" class="form-control" />
+                <span asp-validation-for="EmployeeSurname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeContactNumber" class="control-label">Employee Contact Number</label>
+                <input asp-for="EmployeeContactNumber" class="form-control" />
+                <span asp-validation-for="EmployeeContactNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeEmailNumber" class="control-label">Employee Email Number</label>
+                <input asp-for="EmployeeEmailNumber" class="form-control" />
+                <span asp-validation-for="EmployeeEmailNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompanyId" class="control-label"></label>
+                <select asp-for="CompanyId" class="form-control" asp-items="ViewBag.CompanyId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProvenceId" class="control-label"></label>
+                <select asp-for="ProvenceId" class="form-control" asp-items="ViewBag.ProvenceId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts
+ {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCUqE3EyGYZe75yUrYJdS2M4j868WUU350"></script>
+    <script type="text/javascript">
+    google.maps.event.addDomListener(window, 'load', function () {
+        var options = {
+            componentRestrictions: { country: "za" }
+        };
+        var input = document.getElementById('PlaceName');
+        var places = new google.maps.places.Autocomplete(input, options);
+    });
+    </script>
+
+}
