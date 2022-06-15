@@ -15,12 +15,16 @@ namespace OwensPedPedWebApplication.Controllers
 
         private readonly ICompanyRepository _companyRepository;
         private readonly ICountryRepository _countryRepository;
+        private readonly IProvenceRepository _provenceRepository;
 
 
-        public CompanyController(ICompanyRepository companyRepository, ICountryRepository countryRepository)
+        public CompanyController(ICompanyRepository companyRepository,
+            ICountryRepository countryRepository, IProvenceRepository provenceRepository)
         {
             _companyRepository = companyRepository;
             _countryRepository = countryRepository;
+            _provenceRepository = provenceRepository;
+
         }
         // GET: CompanyController
         public ActionResult Index()
@@ -37,6 +41,8 @@ namespace OwensPedPedWebApplication.Controllers
         // GET: CompanyController/Create
         public ActionResult Create()
         {
+            GetProvenceViewbag();
+            GetCountryViewbag();
             return View();
         }
 
@@ -56,8 +62,8 @@ namespace OwensPedPedWebApplication.Controllers
                 return View();
             }
         }
-
-        private void GetProvenceViewbag()
+        //adding the country drop down list  inside the company
+        private void GetCountryViewbag()
         {
             var countries = _countryRepository.GetAllCountries().OrderBy(x => x.CountryName);
 
@@ -71,9 +77,27 @@ namespace OwensPedPedWebApplication.Controllers
             ViewBag.countryViewbag = countryOption;
         }
 
+        //Ading the provence drop down list inside the company
+        private void GetProvenceViewbag()
+        {
+            var countries = _provenceRepository.GetAllProvences().OrderBy(x => x.ProvenceName);
+
+            List<SelectListItem> provenceOption = new List<SelectListItem>();
+
+            foreach (var c in countries)
+            {
+                provenceOption.Add(new SelectListItem(c.ProvenceName, c.ProvenceId.ToString()));
+            }
+
+            ViewBag.countryViewbag = provenceOption;
+        }
+
         // GET: CompanyController/Edit/5
         public ActionResult Edit(int id)
+
         {
+            GetProvenceViewbag();
+            GetCountryViewbag();
             return View(_companyRepository.GetCompanyById(id));
         }
 
@@ -90,6 +114,8 @@ namespace OwensPedPedWebApplication.Controllers
             }
             catch
             {
+                GetProvenceViewbag();
+                GetCountryViewbag(); 
                 return View();
             }
         }
@@ -97,6 +123,8 @@ namespace OwensPedPedWebApplication.Controllers
         // GET: CompanyController/Delete/5
         public ActionResult Delete(int id)
         {
+            GetProvenceViewbag();
+            GetCountryViewbag(); 
             return View(_companyRepository.GetCompanyById(id));
         }
 
@@ -113,6 +141,8 @@ namespace OwensPedPedWebApplication.Controllers
             }
             catch
             {
+                GetProvenceViewbag();
+                GetCountryViewbag();
                 return View();
             }
         }

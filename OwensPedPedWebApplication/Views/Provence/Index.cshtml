@@ -1,0 +1,41 @@
+﻿@model IEnumerable<OwensPedPed.DAL.Models.Provence>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<p>
+    <a asp-action="Create">Create Provence</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProvenceName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProvenceName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country.CountryName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProvenceId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProvenceId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProvenceId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
